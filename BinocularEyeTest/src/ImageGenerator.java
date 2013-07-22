@@ -63,8 +63,14 @@ public class ImageGenerator {
     }
     public static void main(String[] args) {
         // TODO Auto-generated method stub
+        int width = 1280;
+        int height = 800;
+        if (args.length == 2) {
+            width = Integer.parseInt(args[0]);
+            height = Integer.parseInt(args[1]);
+        }
         System.out.println("Starting Image Generator");
-        ImageGenerator.saveImage("./fsbg.png", ImageGenerator.generateImage(1280, 800), "png");
+        ImageGenerator.saveImage("./fsbg.png", ImageGenerator.generateImage(width, height), "png");
         System.out.println("Image Generator Finished");
     }
 

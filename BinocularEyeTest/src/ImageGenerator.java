@@ -17,22 +17,49 @@ public class ImageGenerator {
      */
     
    
-   public static BufferedImage generateImage(int width, int height) {
+   public static BufferedImage generateImage(int width, int height, int patternType) {
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                if (Math.random() * 2 > 1) {
-                    img.setRGB(x, y, Color.black.getRGB());
-                } else {
-                    img.setRGB(x, y, Color.white.getRGB());
-                }
-            }
+        if (patternType == 0) {
+        	System.out.println("Random");
+        	for (int x = 0; x < width; x++) {
+        		for (int y = 0; y < height; y++) {
+        			if (Math.random() * 2 > 1) {
+        				img.setRGB(x, y, Color.black.getRGB());
+        			} else {
+        				img.setRGB(x, y, Color.white.getRGB());
+        			}
+        		}
+        	}
+        }else if (patternType == 1) {
+        	System.out.println("Horizontal");
+        	for (int x = 0; x < width; x++) {
+        		for (int y = 0; y < height; y++) {
+        			if (y % 3 == 2) {
+        				img.setRGB(x, y, Color.black.getRGB());
+        			} else {
+        				img.setRGB(x, y, Color.white.getRGB());
+        			}
+        		}
+        	}
+        } else if (patternType == 2) {
+        	System.out.println("Vertical");
+        	for (int x = 0; x < width; x++) {
+        		for (int y = 0; y < height; y++) {
+        			if (x % 3 == 1) {
+        				img.setRGB(x, y, Color.black.getRGB());
+        			} else {
+        				img.setRGB(x, y, Color.white.getRGB());
+        			}
+        		}
+        	}
         }
-        
         return img;
         
     }
     
+    public static BufferedImage generateImage(int width, int height) {
+    	return generateImage(width, height, 0);
+    }
     public static void saveImage(String fname, Image img, String format) {
         File f;
         if (fname == "") {
@@ -65,12 +92,28 @@ public class ImageGenerator {
         // TODO Auto-generated method stub
         int width = 1280;
         int height = 800;
-        if (args.length == 2) {
+        int pattern = 0;
+        if (args.length >= 2) {
             width = Integer.parseInt(args[0]);
             height = Integer.parseInt(args[1]);
         }
+        System.out.println(args.length);
+        if (args.length == 3) {
+        	System.out.println("\"" + args[2].toUpperCase() + "\"");
+        	System.out.println(args[2].equals("HORIZONTAL"));
+        	if (args[2].equals("RANDOM")) {
+        		System.out.println("Pattern = 0");
+        		pattern = 0;
+        	} else if (args[2].equals("HORIZONTAL")) {
+        		System.out.println("Pattern = 1");
+        		pattern = 1;
+        	} else if (args[2].equals("VERTICAL")) {
+        		System.out.println("Pattern = 2");
+        		pattern = 2;
+        	}
+        }
         System.out.println("Starting Image Generator");
-        ImageGenerator.saveImage("./fsbg.png", ImageGenerator.generateImage(width, height), "png");
+        ImageGenerator.saveImage("./fsbg.png", ImageGenerator.generateImage(width, height, pattern), "png");
         System.out.println("Image Generator Finished");
     }
 

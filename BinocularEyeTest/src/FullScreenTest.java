@@ -131,8 +131,8 @@ public class FullScreenTest extends JPanel implements ActionListener, Runnable {
         bs = f.getBufferStrategy();
         screenWidth = dev.getDisplayMode().getWidth();
         screenHeight = dev.getDisplayMode().getHeight();
-        loadImages();
-        //generateImages();
+        //loadImages();
+        generateImages();
         running = true;
         animation = new Thread(this);
         animation.start();

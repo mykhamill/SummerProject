@@ -16,14 +16,14 @@ public class ImageGenerator {
      * @param args
      */
     
-   
-   public static BufferedImage generateImage(int width, int height, int patternType) {
+    
+    public static BufferedImage generateImage(int width, int height, int patternType, int coverage) {
         BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         if (patternType == 0) {
         	System.out.println("Random");
         	for (int x = 0; x < width; x++) {
         		for (int y = 0; y < height; y++) {
-        			if (Math.random() * 2 > 1) {
+        			if (Math.random() * 100 <= coverage) {
         				img.setRGB(x, y, Color.black.getRGB());
         			} else {
         				img.setRGB(x, y, Color.white.getRGB());
@@ -60,9 +60,14 @@ public class ImageGenerator {
     public static BufferedImage generateImage(int width, int height) {
     	return generateImage(width, height, 0);
     }
+    
+    public static BufferedImage generateImage(int width, int height, int patternType) {
+    	return generateImage(width, height, patternType, 50);
+    }
+    
     public static void saveImage(String fname, Image img, String format) {
         File f;
-        if (fname == "") {
+        if (fname.equals("")) {
             f = null;
             JFileChooser chooser = new JFileChooser();
             int returnVal = chooser.showSaveDialog(null);
@@ -70,7 +75,7 @@ public class ImageGenerator {
                 f = chooser.getSelectedFile();
             }
         } else {
-            f = new File(fname);
+            f = new File("./" + fname + "." + format);
         }
         try {
             f.createNewFile();
@@ -93,12 +98,15 @@ public class ImageGenerator {
         int width = 1280;
         int height = 800;
         int pattern = 0;
+        int coverage = 50;
+        String fname = "fsbg";
+        String format = "png";
         if (args.length >= 2) {
             width = Integer.parseInt(args[0]);
             height = Integer.parseInt(args[1]);
         }
         System.out.println(args.length);
-        if (args.length == 3) {
+        if (args.length >= 3) {
         	System.out.println("\"" + args[2].toUpperCase() + "\"");
         	System.out.println(args[2].equals("HORIZONTAL"));
         	if (args[2].equals("RANDOM")) {
@@ -112,8 +120,14 @@ public class ImageGenerator {
         		pattern = 2;
         	}
         }
+        if (args.length >= 4) {
+        	coverage = Integer.parseInt(args[3]);
+        }
+        if (args.length >= 5) {
+        	fname = args[4];
+        }
         System.out.println("Starting Image Generator");
-        ImageGenerator.saveImage("./fsbg.png", ImageGenerator.generateImage(width, height, pattern), "png");
+        ImageGenerator.saveImage(fname, ImageGenerator.generateImage(width, height, pattern, coverage), "png");
         System.out.println("Image Generator Finished");
     }
 
